@@ -26,7 +26,7 @@
 
 	//adjust canvas size to the right size.
         this.attr('height', this.players * (this.settings.height + this.settings.v_spacing));
-        this.attr('width', this.rounds * (this.settings.width + this.settings.h_spacing));
+        this.attr('width', this.rounds * (this.settings.width + this.settings.h_spacing + this.settings.width));
         
 	//Check to see if browser will use canvas
 	if (this[0].getContext) {
@@ -76,16 +76,38 @@
 		//This is a mess... will tidy later
                 ctx.fillStyle = makegrad((yloc * (this.settings.height + this.settings.v_spacing)) + (yadj * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5));
                 ctx.fillRect((i * (this.settings.width + this.settings.h_spacing)), (yloc * (this.settings.height + this.settings.v_spacing)) + (yadj * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5), this.settings.width, this.settings.height);
+		
+	
 		//draw border if needed
                 if (this.settings.border_width > 0) {
                     ctx.strokeRect((i * (this.settings.width + this.settings.h_spacing)), (yloc * (this.settings.height + this.settings.v_spacing)) + (yadj * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5), this.settings.width, this.settings.height);
                 }
 		
+		//if last round draw winner cell
+		if (i == (this.rounds-1)){
+			ctx.fillStyle = makegrad((yloc_next * (this.settings.height + this.settings.v_spacing)) + (yadj_next * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5));
+		        ctx.fillRect(((i+1) * (this.settings.width + this.settings.h_spacing)), (yloc_next * (this.settings.height + this.settings.v_spacing)) + (yadj_next * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5), this.settings.width, this.settings.height);
+			//draw border if needed
+		        if (this.settings.border_width > 0) {
+		            ctx.strokeRect(((i+1) * (this.settings.width + this.settings.h_spacing)), (yloc_next * (this.settings.height + this.settings.v_spacing)) + (yadj_next * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5), this.settings.width, this.settings.height);
+		        }
+			if (data.rounds[i].matches[0].winner == 1){
+				ctx.fillStyle = this.settings.text_color;
+				ctx.fillText(data.rounds[i].matches[0].p1, ((i+1) * (this.settings.width + this.settings.h_spacing)) + 5, (yloc_next * (this.settings.height + this.settings.v_spacing)) + (yadj_next * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5) + ((this.settings.height / 2) - 8));
+			}
+			if (data.rounds[i].matches[0].winner == 2){
+				ctx.fillStyle = this.settings.text_color;
+				ctx.fillText(data.rounds[i].matches[0].p2, ((i+1) * (this.settings.width + this.settings.h_spacing)) + 5, (yloc_next * (this.settings.height + this.settings.v_spacing)) + (yadj_next * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5) + ((this.settings.height / 2) - 8));
+			}
+		}
+
 		//set bracket options
                 ctx.strokeStyle = this.settings.bracket_color;
                 ctx.lineWidth = this.settings.bracket_width;
+
 		//draw them brakets
                 ctx.beginPath();
+
 		//move to right middle of element just dawn
                 ctx.moveTo(((i * (this.settings.width + this.settings.h_spacing)) + this.settings.width), (yloc * (this.settings.height + this.settings.v_spacing)) + (yadj * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5) + (this.settings.height / 2));
 
