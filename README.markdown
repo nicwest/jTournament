@@ -11,7 +11,7 @@ requires jQuery, add to <head> tag:
     <head>
      <title>jTournament</title>
      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
-     <script src="tourney.js"></script>
+     <script src="jTournament.js"></script>
     </head>
 
 Define canvas in <body>:
@@ -118,7 +118,7 @@ Finally instigate the thingy like this:
 
     <script>
         $(document).ready(function () {
-            $('#test').maketourney(options, matchInfo);
+            $('#test').jTournament(options, matchInfo);
         }
     </script>
 
