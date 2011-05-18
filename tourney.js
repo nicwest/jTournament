@@ -26,7 +26,7 @@
 
 	//adjust canvas size to the right size.
         this.attr('height', this.players * (this.settings.height + this.settings.v_spacing));
-        this.attr('width', (this.rounds+1)* (this.settings.width + this.settings.h_spacing ));
+        this.attr('width', this.rounds * (this.settings.width + this.settings.h_spacing + this.settings.width));
         
 	//Check to see if browser will use canvas
 	if (this[0].getContext) {
