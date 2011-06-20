@@ -73,33 +73,37 @@
                 var ygap = ((c * (n + 1)) + (1 - c)) - yloc;
                 var yadj = ygap / 2;
                 var ygap_next = ((Math.pow(2, (i + 1))) * (Math.ceil((j + 1) / 2) + 1)) + (1 - (Math.pow(2, (i + 1)))) - yloc_next;
-                var yadj_next = ygap_next / 2;
+                var yadj_next = ygap_next / 2;		
+		var prot_y = this.settings.height + this.settings.v_spacing;
+		var prot_x = this.settings.width + this.settings.h_spacing;
 
                 //This is a mess... will tidy later
-                ctx.fillStyle = makegrad((yloc * (this.settings.height + this.settings.v_spacing)) + (yadj * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5));
-                ctx.fillRect((i * (this.settings.width + this.settings.h_spacing)), (yloc * (this.settings.height + this.settings.v_spacing)) + (yadj * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5), this.settings.width, this.settings.height);
+                ctx.fillStyle = makegrad((yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5));
+                ctx.fillRect((i * (prot_x)), (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5), this.settings.width, this.settings.height);
 
 
                 //draw border if needed
                 if (this.settings.border_width > 0) {
-                    ctx.strokeRect((i * (this.settings.width + this.settings.h_spacing)), (yloc * (this.settings.height + this.settings.v_spacing)) + (yadj * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5), this.settings.width, this.settings.height);
+                    ctx.strokeRect((i * (prot_x)), (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5), this.settings.width, this.settings.height);
                 }
+
+	
 
                 //if last round draw winner cell
                 if (i == (this.rounds - 1)) {
-                    ctx.fillStyle = makegrad((yloc_next * (this.settings.height + this.settings.v_spacing)) + (yadj_next * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5));
-                    ctx.fillRect(((i + 1) * (this.settings.width + this.settings.h_spacing)), (yloc_next * (this.settings.height + this.settings.v_spacing)) + (yadj_next * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5), this.settings.width, this.settings.height);
+                    ctx.fillStyle = makegrad((yloc_next * (prot_y)) + (yadj_next * (prot_y)) - ((prot_y) * 1.5));
+                    ctx.fillRect(((i + 1) * (prot_x)), (yloc_next * (prot_y)) + (yadj_next * (prot_y)) - ((prot_y) * 1.5), this.settings.width, this.settings.height);
                     //draw border if needed
                     if (this.settings.border_width > 0) {
-                        ctx.strokeRect(((i + 1) * (this.settings.width + this.settings.h_spacing)), (yloc_next * (this.settings.height + this.settings.v_spacing)) + (yadj_next * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5), this.settings.width, this.settings.height);
+                        ctx.strokeRect(((i + 1) * (prot_x)), (yloc_next * (prot_y)) + (yadj_next * (prot_y)) - ((prot_y) * 1.5), this.settings.width, this.settings.height);
                     }
                     if (data.rounds[i].matches[0].winner == 1) {
                         ctx.fillStyle = this.settings.text_color;
-                        ctx.fillText(data.rounds[i].matches[0].p1, ((i + 1) * (this.settings.width + this.settings.h_spacing)) + 5, (yloc_next * (this.settings.height + this.settings.v_spacing)) + (yadj_next * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5) + ((this.settings.height / 2) - 8));
+                        ctx.fillText(data.rounds[i].matches[0].p1, ((i + 1) * (prot_x)) + 5, (yloc_next * (prot_y)) + (yadj_next * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
                     }
                     if (data.rounds[i].matches[0].winner == 2) {
                         ctx.fillStyle = this.settings.text_color;
-                        ctx.fillText(data.rounds[i].matches[0].p2, ((i + 1) * (this.settings.width + this.settings.h_spacing)) + 5, (yloc_next * (this.settings.height + this.settings.v_spacing)) + (yadj_next * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5) + ((this.settings.height / 2) - 8));
+                        ctx.fillText(data.rounds[i].matches[0].p2, ((i + 1) * (prot_x)) + 5, (yloc_next * (prot_y)) + (yadj_next * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
                     }
                 }
 
@@ -111,16 +115,16 @@
                 ctx.beginPath();
 
                 //move to right middle of element just dawn
-                ctx.moveTo(((i * (this.settings.width + this.settings.h_spacing)) + this.settings.width), (yloc * (this.settings.height + this.settings.v_spacing)) + (yadj * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5) + (this.settings.height / 2));
+                ctx.moveTo(((i * (prot_x)) + this.settings.width), (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5) + (this.settings.height / 2));
 
                 // draw horizontal line to 1/2 of h_spacing
-                ctx.lineTo(((i * (this.settings.width + this.settings.h_spacing)) + this.settings.width + (this.settings.h_spacing / 2)), (yloc * (this.settings.height + this.settings.v_spacing)) + (yadj * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5) + (this.settings.height / 2));
+                ctx.lineTo(((i * (prot_x)) + this.settings.width + (this.settings.h_spacing / 2)), (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5) + (this.settings.height / 2));
 
                 //draw vertical line to y of the middle of the next element
-                ctx.lineTo(((i * (this.settings.width + this.settings.h_spacing)) + this.settings.width + (this.settings.h_spacing / 2)), (yloc_next * (this.settings.height + this.settings.v_spacing)) + (yadj_next * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5) + (this.settings.height / 2));
+                ctx.lineTo(((i * (prot_x)) + this.settings.width + (this.settings.h_spacing / 2)), (yloc_next * (prot_y)) + (yadj_next * (prot_y)) - ((prot_y) * 1.5) + (this.settings.height / 2));
 
                 //draw horizontal to next element
-                ctx.lineTo(((i * (this.settings.width + this.settings.h_spacing)) + this.settings.width + (this.settings.h_spacing)), (yloc_next * (this.settings.height + this.settings.v_spacing)) + (yadj_next * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5) + (this.settings.height / 2));
+                ctx.lineTo(((i * (prot_x)) + prot_x), (yloc_next * (prot_y)) + (yadj_next * (prot_y)) - ((prot_y) * 1.5) + (this.settings.height / 2));
                 ctx.stroke();
 
                 //reset strokes in case you have different borders
@@ -148,7 +152,7 @@
                         }
 
                         //...then write the NAME!
-                        ctx.fillText(data.rounds[i].matches[(j / 2)].p1, (i * (this.settings.width + this.settings.h_spacing)) + 5, (yloc * (this.settings.height + this.settings.v_spacing)) + (yadj * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5) + ((this.settings.height / 2) - 8));
+                        ctx.fillText(data.rounds[i].matches[(j / 2)].p1, (i * (prot_x)) + 5, (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
                     }
                 } else {
 
@@ -160,7 +164,7 @@
                                 ctx.fillStyle = this.settings.text_color_loss;
                             }
                         }
-                        ctx.fillText(data.rounds[i].matches[Math.floor(j / 2)].p2, (i * (this.settings.width + this.settings.h_spacing)) + 5, (yloc * (this.settings.height + this.settings.v_spacing)) + (yadj * (this.settings.height + this.settings.v_spacing)) - ((this.settings.height + this.settings.v_spacing) * 1.5) + ((this.settings.height / 2) - 8));
+                        ctx.fillText(data.rounds[i].matches[Math.floor(j / 2)].p2, (i * (prot_x)) + 5, (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
 
 
                     }

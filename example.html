@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us">
 <head>
 <title>jTournament v0.1 Example</title>
-<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' type='text/javascript'> </script>
+<script src='jquery.min.js' type='text/javascript'> </script>
 <script src='jTournament.js' type='text/javascript'> </script>
 <script>
  var matchInfo = {
@@ -78,10 +78,12 @@
 $(document).ready(function () {
     $('#test').jTournament({
         width: 120,
-        height: 30,
+        height: 90,
         border_width: "1",
         background_color: "#c0c0c0",
-        text_style: "bold 11px verdana",
+        text_style: "bold 15px verdana",
+	h_spacing: 30,
+	v_spacing: 10,
         text_color: "#FFFFFF",
         text_color_loss: "#777777",
         gradient: [{loc: 0, color: '#4F4F4F'},
