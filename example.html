@@ -6,70 +6,71 @@
 <script src='jTournament.js' type='text/javascript'> </script>
 <script>
  var matchInfo = {
-    "rounds": [{
-        "name": "Round1",
-        "matches": [{
-            "p1": "Bill",
-            "p2": "Bob",
-            "winner": 1
+    rounds: [{
+        name: "Round1",
+        matches: [{
+            p1: "Bill",
+            p2: "Bob",
+            p1_logo: "http://www.gravatar.com/avatar/f4c283666dca631b4c058b0030b5fedd?s=30", 
+            winner: 1
         }, {
-            "p1": "Sam",
-            "p2": "Duddly",
-            "winner": 2
+            p1: "Sam",
+            p2: "Duddly",
+            winner: 2
         }, {
-            "p1": "Andy",
-            "p2": "Biff",
-            "winner": 1
+            p1: "Andy",
+            p2: "Biff",
+            winner: 1
         }, {
-            "p1": "Phill",
-            "p2": "Peter",
-            "winner": 1
+            p1: "Phill",
+            p2: "Peter",
+            winner: 1
         }, {
-            "p1": "John",
-            "p2": "Dave",
-            "winner": 2
+            p1: "John",
+            p2: "Dave",
+            winner: 2
         }, {
-            "p1": "Xaus",
-            "p2": "James",
-            "winner": 2
+            p1: "Xaus",
+            p2: "James",
+            winner: 2
         }, {
-            "p1": "Kenny",
-            "p2": "Nick",
-            "winner": 1
+            p1: "Kenny",
+            p2: "Nick",
+            winner: 1
         }, {
-            "p1": "Fred",
-            "p2": "Pat",
-            "winner": 2
+            p1: "Fred",
+            p2: "Pat",
+            winner: 2
         }]
     }, {
-        "name": "Round2",
-        "matches": [{
-            "p1": null,
-            "p2": null
+        name: "Round2",
+        matches: [{
+            p1: null,
+            p2: null
         }, {
-            "p1": null,
-            "p2": null
+            p1: null,
+            p2: null
         }, {
-            "p1": null,
-            "p2": null
+            p1: null,
+            p2: null
         }, {
-            "p1": null,
-            "p2": null
+            p1: null,
+            p2: null
         }]
     }, {
-        "name": "Round3",
-        "matches": [{
-            "p1": null,
-            "p2": null
+        name: "Round3",
+        matches: [{
+            p1: null,
+            p2: null
         }, {
-            "p1": null,
-            "p2": null
+            p1: null,
+            p2: null
         }]
     }, {
-        "name": "Round4",
-        "matches": [{
-            "p1": null,
-            "p2": null
+        name: "Round4",
+        matches: [{
+            p1: null,
+            p2: null
         }, ]
     }]
 };
@@ -77,18 +78,19 @@
 
 $(document).ready(function () {
     $('#test').jTournament({
-        width: 120,
-        height: 90,
-        border_width: "1",
-        background_color: "#c0c0c0",
-        text_style: "bold 15px verdana",
-	h_spacing: 30,
-	v_spacing: 10,
-        text_color: "#FFFFFF",
-        text_color_loss: "#777777",
-        gradient: [{loc: 0, color: '#4F4F4F'},
-		   {loc: 0.5, color: '#1B1B1B'},
-		   {loc: 0.5, color: '#000000'}]
+			width: 100,
+			height: 30,
+			border_width: "1",
+			background_color: "#c0c0c0",
+			text_style: "bold 15px verdana",
+			h_spacing: 10,
+			v_spacing: 10,
+			text_color: "#FFFFFF",
+			text_color_loss: "#777777",
+			gradient: [{loc: 0, color: '#4F4F4F'},
+			   {loc: 0.5, color: '#1B1B1B'},
+			   {loc: 0.5, color: '#000000'}],
+			logo: {active: true}
     }, matchInfo);
 });
   </script>

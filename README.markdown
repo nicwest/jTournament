@@ -3,6 +3,8 @@ jTournament
 
 Makes jQuery make tournament trees using canvas, from json. Tis very messy at the moment.
 
+Based loosely on this: http://whileonefork.blogspot.com/2010/10/jquery-json-to-draw-elimination-single.html
+
 Use me
 ------
 
@@ -14,7 +16,7 @@ requires jQuery, add to <head> tag:
      <script src="jTournament.js"></script>
     </head>
 
-Define canvas in <body>:
+Define canvas in body:
 
     <body>
      <canvas id="tournament"></canvas>
@@ -133,3 +135,14 @@ They are fun and work like this:
                               {loc: 0.5, color: '#000000'}]};
     // where loc is the location on graident scale from 0 to 1 and the color is the color at that location;
     </script>
+
+TO DOOOO LIST
+-------------
+
+links
+
+score
+
+scaling?
+
+conference/upper/lower brackets?
