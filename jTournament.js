@@ -1,24 +1,26 @@
 (function ($) {
 
-    $.fn.jTournament = function (settings, data) {
-
+ $.fn.jTournament = function (settings, data) {
+		this.before ("<div style=\"position:relative; width: 100%; height: 100%;\">");
+		this.after ("</div>");
 		//Default Options
 		var ds = {
 			width: 40,
 			height: 30,
 			v_spacing: 10,
 			h_spacing: 10,
-			background_color: "#545454",
+			background_color: "#EDEDED",
 			border_color: "#000000",
 			border_width: "1",
 			bracket_color: "#000000",
 			bracket_width: "2",
 			text_color: "#000000",
-			text_color_loss: "#000000",
+			text_color_loss: "#666666",
 			text_style: "italic 11px verdana",
 			gradient: false,
 			logo: {active: false, height: 30, width: 30, default_image: "default_logo.jpg", border: 1},
-			score: {active: false, height: 30, width: 10, score_win_color: "#0000FF",score_loss_color: "#FF0000",score_neutral_color: "#00FF00"}
+			score: {active: false, height: 30, width: 10, win_color: "#00FF00", loss_color: "#FF0000", neutral_color: "#0000FF", padding: 20},
+			links: {active: false}
 		};
 		
 		$.extend(true,ds, settings);
@@ -38,9 +40,17 @@
 		 		}
 		 }
 		//adjust canvas size to the right size.
-		this.attr('height', this.players * (this.settings.height + this.settings.v_spacing));
-		this.attr('width', this.rounds * (this.settings.width + this.settings.h_spacing + this.settings.width));
+
+		var x_adjustment = 0;
+		var y_adjustment = 0;
+				
+		if (this.settings.logo.active){
+			x_adjustment += this.settings.logo.width;
+		}
+		this.attr('height', (this.players * (this.settings.height + this.settings.v_spacing)));
+		this.attr('width', ((this.rounds * (this.settings.width +x_adjustment + this.settings.h_spacing ))+ this.settings.width+x_adjustment));
 		var logo_store = [];
+		var link_store = [];
 		//Check to see if browser will use canvas
 		if (this[0].getContext) {
 			var ctx = this[0].getContext('2d');
@@ -67,32 +77,28 @@
 		 
 		// i = rounds, j = players in matches in that round
 		for (i = 0; i < (this.rounds); i++) {
-				for (j = 0; j < (data.rounds[i].matches.length * 2); j++) {
-			   //set up general defaults accoring to settings
-			   ctx.fillStyle = this.settings.background_color;
-			   ctx.strokeStyle = this.settings.border_color; // red
-			   ctx.lineWidth = this.settings.border_width;
-			   ctx.font = this.settings.text_style;
-			   ctx.textBaseline = 'top';
-			   //general formular is (((2^i)*(j+1))+(1-(2^i))) I broke it down for my own sanitity.
-			   var c = (Math.pow(2, (i)));
-			   var n = j + 1;
-			   var yloc = (c * n) + (1 - c);
-			   var yloc_next = ((Math.pow(2, (i + 1))) * (Math.ceil((j + 1) / 2))) + (1 - (Math.pow(2, (i + 1))));
-			   var ygap = ((c * (n + 1)) + (1 - c)) - yloc;
-			   var yadj = ygap / 2;
-			   var ygap_next = ((Math.pow(2, (i + 1))) * (Math.ceil((j + 1) / 2) + 1)) + (1 - (Math.pow(2, (i + 1)))) - yloc_next;
-			   var yadj_next = ygap_next / 2;		
-				var prot_y = this.settings.height + this.settings.v_spacing;
-				var prot_x = this.settings.width + this.settings.h_spacing;
-				var x_adjustment = 0;
-				var y_adjustment = 0;
-				
-				if (this.settings.logo.active){
-					prot_x += this.settings.logo.width;
-					x_adjustment += this.settings.logo.width;
-				}
+			for (j = 0; j < (data.rounds[i].matches.length * 2); j++) {
+			//set up general defaults accoring to settings
+			ctx.fillStyle = this.settings.background_color;
+			ctx.strokeStyle = this.settings.border_color; // red
+			ctx.lineWidth = this.settings.border_width;
+			ctx.font = this.settings.text_style;
+			ctx.textBaseline = 'top';
+			//general formular is (((2^i)*(j+1))+(1-(2^i))) I broke it down for my own sanitity.
+			var c = (Math.pow(2, (i)));
+			var n = j + 1;
+			var yloc = (c * n) + (1 - c);
+			var yloc_next = ((Math.pow(2, (i + 1))) * (Math.ceil((j + 1) / 2))) + (1 - (Math.pow(2, (i + 1))));
+			var ygap = ((c * (n + 1)) + (1 - c)) - yloc;
+			var yadj = ygap / 2;
+			var ygap_next = ((Math.pow(2, (i + 1))) * (Math.ceil((j + 1) / 2) + 1)) + (1 - (Math.pow(2, (i + 1)))) - yloc_next;
+			var yadj_next = ygap_next / 2;		
+			var prot_y = this.settings.height + this.settings.v_spacing;
+			var prot_x = this.settings.width + this.settings.h_spacing;
 
+			if (this.settings.logo.active){
+				prot_x += this.settings.logo.width;
+			}
 				 //draw logo if active
 				if (this.settings.logo.active){	
 					
@@ -109,26 +115,84 @@
 					logo_store[j].func.ypos = (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5);
 					logo_store[j].func.j = j;
 
-					if (Math.floor(j / 2) == (j / 2)){
-						if (data.rounds[i].matches[(j / 2)].p1_logo != null) {
-							logo_store[j].func.src = data.rounds[i].matches[(j / 2)].p1_logo;
+					if (Math.floor(j / 2) == (j / 2) ){
+						if (data.rounds[i].matches[(j / 2)].p1 != null && data.rounds[i].matches[(j / 2)].p1.logo != null) {
+							logo_store[j].func.src = data.rounds[i].matches[(j / 2)].p1.logo;
 						} else {
 							logo_store[j].func.src = this.settings.logo.default_image;
 						}
 					} else {
-						if (data.rounds[i].matches[Math.floor(j / 2)].p2_logo != null) {
-							logo_store[j].func.src = data.rounds[i].matches[Math.floor(j / 2)].p2_logo;
+						if (data.rounds[i].matches[Math.floor(j / 2)].p2 != null && data.rounds[i].matches[Math.floor(j / 2)].p2.logo != null) {
+							logo_store[j].func.src = data.rounds[i].matches[Math.floor(j / 2)].p2.logo;
 						} else {
 							logo_store[j].func.src = this.settings.logo.default_image;
 						}
 					}
 				} 
 				
+
 				//This is a mess... will tidy later (vaguely tidied now)
 				ctx.fillStyle = makegrad((yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5), this.settings);
 				ctx.fillRect(((i * (prot_x))+x_adjustment), (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5), this.settings.width, this.settings.height);
 				
-				
+				// build link array				
+				if (this.settings.links.active) {
+					if (Math.floor(j / 2) == (j / 2)) {
+						if (data.rounds[i].matches[j/2].p1 != null && data.rounds[i].matches[j/2].p1.link != null) {
+							var link_src = data.rounds[i].matches[j/2].p1.link;
+						} else {
+							var link_src = false;
+						}
+					} else {
+						
+						if (data.rounds[i].matches[Math.floor(j/2)].p2 != null && data.rounds[i].matches[Math.floor(j/2)].p2.link != null) {
+							var link_src = data.rounds[i].matches[Math.floor(j/2)].p2.link;
+						} else {
+							var link_src = false;
+						}
+					}
+					var link_x = (i * (prot_x));
+					var link_y = (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5);
+					var link_w = this.settings.width;
+					var link_h = this.settings.height;
+					if (this.settings.logo.active) {
+						link_w = link_w+this.settings.logo.width;
+					}
+					if (!link_src == false) {
+						link_store.push  ({x: link_x, y: link_y, width: link_w, height: link_h, src: link_src});
+					}
+					
+				}
+				//writescore if active
+				if (this.settings.score.active) {
+					
+					ctx.fillStyle = this.settings.score.neutral_color;
+					if (Math.floor(j / 2) == (j / 2)) {
+						if (data.rounds[i].matches[(j / 2)].p1 != null && data.rounds[i].matches[(j / 2)].p1.score != null) {
+							if (data.rounds[i].matches[(j / 2)].winner != null) {
+								if (data.rounds[i].matches[(j / 2)].winner == 1) {
+									ctx.fillStyle = this.settings.score.win_color;
+								} else {
+									ctx.fillStyle = this.settings.score.loss_color;
+								}
+							}
+							ctx.fillText(data.rounds[i].matches[(j / 2)].p1.score, ((((i * (prot_x)))+x_adjustment)+this.settings.width-this.settings.score.padding), (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
+						}
+					} else {
+						if (data.rounds[i].matches[Math.floor(j / 2)].p2 != null && data.rounds[i].matches[Math.floor(j / 2)].p2.score != null) {
+							if (data.rounds[i].matches[Math.floor(j / 2)].winner != null) {
+								if (data.rounds[i].matches[Math.floor(j / 2)].winner == 2) {
+									ctx.fillStyle = this.settings.score.win_color;
+								} else {
+									ctx.fillStyle = this.settings.score.loss_color;
+								}
+							}
+							ctx.fillText(data.rounds[i].matches[Math.floor(j / 2)].p2.score, ((((i * (prot_x)))+x_adjustment)+this.settings.width-this.settings.score.padding), (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
+						}
+					}
+					ctx.fillStyle = this.settings.text_color;
+				}
+
 				//draw border if needed
 				if (this.settings.border_width > 0) {
 					ctx.strokeRect(((i * (prot_x))+x_adjustment), (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5), this.settings.width, this.settings.height);
@@ -152,9 +216,9 @@
 						
 
 							if (data.rounds[i].matches[0].winner == 1) {
-								logo_store[j+1].func.src = data.rounds[i].matches[(j / 2)].p1_logo;
+								logo_store[j+1].func.src = data.rounds[i].matches[(j / 2)].p1.logo;
 							} else if (data.rounds[i].matches[0].winner == 2){
-								logo_store[j+1].func.src = data.rounds[i].matches[(j / 2)].p2_logo;
+								logo_store[j+1].func.src = data.rounds[i].matches[(j / 2)].p2.logo;
 							} else {
 								logo_store[j+1].func.src = this.settings.logo.default_image;
 							}
@@ -221,7 +285,7 @@
 						}
 
 						//...then write the NAME!
-						ctx.fillText(data.rounds[i].matches[(j / 2)].p1, (((i * (prot_x)) + 5)+x_adjustment), (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
+						ctx.fillText(data.rounds[i].matches[(j / 2)].p1.name, (((i * (prot_x)) + 5)+x_adjustment), (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
 					}
 				} else {
 
@@ -233,14 +297,24 @@
 								ctx.fillStyle = this.settings.text_color_loss;
 							}
 						}
-						ctx.fillText(data.rounds[i].matches[Math.floor(j / 2)].p2, (((i * (prot_x)) + 5)+x_adjustment), (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
+						ctx.fillText(data.rounds[i].matches[Math.floor(j / 2)].p2.name, (((i * (prot_x)) + 5)+x_adjustment), (yloc * (prot_y)) + (yadj * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
 
 
 					}
 				}
 			}
 		}
-
+		
+		if (link_store.length > 0) {
+			this.before("<img id=\"jTournament_link_map_image\" src=\"trans.gif\" style=\"position: absolute; z-index: 2; height: "+(this.players * (this.settings.height + this.settings.v_spacing))+"px; width: "+((this.rounds * (this.settings.width+ x_adjustment + this.settings.h_spacing ))+ this.settings.width+x_adjustment)+"px; \" />");
+			$('#jTournament_link_map_image').attr('usemap', '#jTournament_link_map');
+			var map_contents = "<map name=\"jTournament_link_map\">\n";
+			for (i=0; i < link_store.length; i++) {
+				map_contents += "<area shape=\"rect\" coords=\""+link_store[i].x+","+link_store[i].y+","+(link_store[i].x+link_store[i].width)+","+(link_store[i].y+link_store[i].height)+"\" href=\""+link_store[i].src+"\" />\n";
+			}
+			map_contents += "</map>";
+			this.after(map_contents);
+		}
 
 	};
 })(jQuery);

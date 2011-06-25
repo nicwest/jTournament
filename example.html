@@ -9,43 +9,42 @@
     rounds: [{
         name: "Round1",
         matches: [{
-            p1: "Bill",
-            p2: "Bob",
-            p1_logo: "http://www.gravatar.com/avatar/f4c283666dca631b4c058b0030b5fedd?s=30", 
+            p1: {name: "Bill", logo: "http://www.gravatar.com/avatar/f4c283666dca631b4c058b0030b5fedd?s=30", score: 12, link: "http://www.gravatar.com/avatar/f4c283666dca631b4c058b0030b5fedd?s=100"},
+            p2: {name: "Bob", score: 9},
             winner: 1
         }, {
-            p1: "Sam",
-            p2: "Duddly",
+            p1: {name: "Sam"},
+            p2: {name: "Duddly"},
             winner: 2
         }, {
-            p1: "Andy",
-            p2: "Biff",
+            p1: {name: "Andy"},
+            p2: {name: "Biff"},
             winner: 1
         }, {
-            p1: "Phill",
-            p2: "Peter",
+            p1: {name: "Phill"},
+            p2: {name: "Peter"},
             winner: 1
         }, {
-            p1: "John",
-            p2: "Dave",
+            p1: {name: "John"},
+            p2: {name: "Dave"},
             winner: 2
         }, {
-            p1: "Xaus",
-            p2: "James",
+            p1: {name: "Xaus"},
+            p2: {name: "James"},
             winner: 2
         }, {
-            p1: "Kenny",
-            p2: "Nick",
+            p1: {name: "Kenny"},
+            p2: {name: "Nick", link: "http://google.com"},
             winner: 1
         }, {
-            p1: "Fred",
-            p2: "Pat",
+            p1: {name: "Fred"},
+            p2: {name: "Pat"},
             winner: 2
         }]
     }, {
         name: "Round2",
         matches: [{
-            p1: null,
+            p1: {name: "Bill", logo: "http://www.gravatar.com/avatar/f4c283666dca631b4c058b0030b5fedd?s=30", link: "http://www.gravatar.com/avatar/f4c283666dca631b4c058b0030b5fedd?s=100"},
             p2: null
         }, {
             p1: null,
@@ -90,12 +89,16 @@ $(document).ready(function () {
 			gradient: [{loc: 0, color: '#4F4F4F'},
 			   {loc: 0.5, color: '#1B1B1B'},
 			   {loc: 0.5, color: '#000000'}],
-			logo: {active: true}
+			logo: {active: true},
+			score: {active: true},
+			links: {active: true}
     }, matchInfo);
 });
   </script>
 </head>
 <body>
+<div>
 <canvas id="test"></canvas>
+</div>
 </body>
 </html>
