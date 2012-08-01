@@ -20,7 +20,8 @@
 			gradient: false,
 			logo: {active: false, height: 30, width: 30, default_image: "default_logo.jpg", border: 1},
 			score: {active: false, height: 30, width: 10, win_color: "#00FF00", loss_color: "#FF0000", neutral_color: "#0000FF", padding: 20},
-			links: {active: false}
+			links: {active: false},
+			url: ""
 		};
 		
 		$.extend(true,ds, settings);
@@ -216,9 +217,9 @@
 						
 
 							if (data.rounds[i].matches[0].winner == 1) {
-								logo_store[j+1].func.src = data.rounds[i].matches[(j / 2)].p1.logo;
+								logo_store[j+1].func.src = data.rounds[i].matches[0].p1.logo;
 							} else if (data.rounds[i].matches[0].winner == 2){
-								logo_store[j+1].func.src = data.rounds[i].matches[(j / 2)].p2.logo;
+								logo_store[j+1].func.src = data.rounds[i].matches[0].p2.logo;
 							} else {
 								logo_store[j+1].func.src = this.settings.logo.default_image;
 							}
@@ -232,11 +233,11 @@
 					}
 					if (data.rounds[i].matches[0].winner == 1) {
 						ctx.fillStyle = this.settings.text_color;
-						ctx.fillText(data.rounds[i].matches[0].p1, ((((i + 1) * (prot_x)) + 5)+x_adjustment), (yloc_next * (prot_y)) + (yadj_next * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
+						ctx.fillText(data.rounds[i].matches[0].p1.name, ((((i + 1) * (prot_x)) + 5)+x_adjustment), (yloc_next * (prot_y)) + (yadj_next * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
 					}
 					if (data.rounds[i].matches[0].winner == 2) {
 						ctx.fillStyle = this.settings.text_color;
-						ctx.fillText(data.rounds[i].matches[0].p2, ((((i + 1) * (prot_x)) + 5)+x_adjustment), (yloc_next * (prot_y)) + (yadj_next * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
+						ctx.fillText(data.rounds[i].matches[0].p2.name, ((((i + 1) * (prot_x)) + 5)+x_adjustment), (yloc_next * (prot_y)) + (yadj_next * (prot_y)) - ((prot_y) * 1.5) + ((this.settings.height / 2) - 8));
 					}
 				}
 
@@ -306,7 +307,7 @@
 		}
 		
 		if (link_store.length > 0) {
-			this.before("<img id=\"jTournament_link_map_image\" src=\"trans.gif\" style=\"position: absolute; z-index: 2; height: "+(this.players * (this.settings.height + this.settings.v_spacing))+"px; width: "+((this.rounds * (this.settings.width+ x_adjustment + this.settings.h_spacing ))+ this.settings.width+x_adjustment)+"px; \" />");
+			this.before("<img id=\"jTournament_link_map_image\" src=\""+this.settings.url+"trans.gif\" style=\"position: absolute; z-index: 2; height: "+(this.players * (this.settings.height + this.settings.v_spacing))+"px; width: "+((this.rounds * (this.settings.width+ x_adjustment + this.settings.h_spacing ))+ this.settings.width+x_adjustment)+"px; \" />");
 			$('#jTournament_link_map_image').attr('usemap', '#jTournament_link_map');
 			var map_contents = "<map name=\"jTournament_link_map\">\n";
 			for (i=0; i < link_store.length; i++) {
